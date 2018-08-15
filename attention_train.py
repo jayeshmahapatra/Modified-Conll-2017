@@ -3,11 +3,47 @@ from math import log
 import random
 import pickle
 
+# Parse terminal arguments
+def parse():
+    parser = argparse.ArgumentParser(description='Morphological Inflection')
 
 
+    # Each tag with description and returning type
+    parser.add_argument('-g', action='store_true', help='Group information')
+    parser.add_argument('-l', action='store_true', help='List test results')
+    parser.add_argument('-a', action='store_true', help='Summarize test results')
+    parser.add_argument('-te', type=str, default='./L12 - Old Church Slavonik/old-church-slavonic-dev', help='Testing file')
+    parser.add_argument('-tr', type=str, default='./L12 - Old Church Slavonik/old-church-slavonic-train-medium', help='Training file')
 
-train_file='old-church-slavonic-train-low'
-validation_file='old-church-slavonic-dev'
+    # Try to parse
+    try:
+        opts = parser.parse_args()
+        # Succeed if g is off and either l or a is on
+        if not opts.g and (opts.l or opts.a):
+            return opts
+        # Succeed if g is on
+        if opts.g:
+            print('Group L12: Old Church Slavonik')
+            print('An Vinh Nguyen Dinh, 2572835')
+            print('Jayesh Mahapatra, 2572831')
+            print('Aleena Thomas, 2572834')
+            sys.exit(0)
+        # Fail
+        raise Exception
+    except:
+        print('Argument error')
+        sys.exit(1)
+
+# Parse terminal arguments
+options = parse()
+
+# Read the training set and the test set
+train = read(options.tr) #
+valid = read(options.te)
+
+
+train_file=train
+validation_file=valid
 num_epochs = 300
 model_file = 'initial.model'
 
